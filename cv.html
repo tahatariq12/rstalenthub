@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drop Your CV | RS Talent Hub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-blue: #0046af;
+            --light-bg: #f9fafb;
+            --border-color: #e5e7eb;
+            --text-dark: #111827;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+            color: var(--text-dark);
+        }
+
+        /* --- STICKY HEADER --- */
+        header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            background: #fff;
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            z-index: 1000;
+        }
+
+        .logo { font-weight: 800; font-size: 22px; color: var(--primary-blue); }
+        nav a { text-decoration: none; color: #333; margin-left: 20px; font-size: 13px; font-weight: 600; text-transform: uppercase; }
+        .active-link { color: var(--primary-blue); border-bottom: 2px solid var(--primary-blue); padding-bottom: 5px; }
+
+        /* --- BANNER --- */
+        .banner {
+            background-color: #f3f4f6;
+            padding: 140px 8% 80px;
+            text-align: left;
+        }
+        .banner h1 { font-size: 45px; font-weight: 800; margin: 0; }
+        .banner p { font-size: 14px; font-style: italic; color: #666; margin-top: 10px; }
+
+        /* --- FORM CONTAINER --- */
+        .container {
+            max-width: 900px;
+            margin: -50px auto 80px;
+            background: #fff;
+            padding: 50px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            position: relative;
+            z-index: 2;
+        }
+
+        h2 { font-size: 32px; font-weight: 700; margin-bottom: 40px; }
+
+        .form-group { margin-bottom: 25px; }
+        label { display: block; margin-bottom: 10px; font-size: 14px; font-weight: 600; color: #374151; }
+        label span { color: #ef4444; }
+
+        input[type="text"], 
+        input[type="email"], 
+        select {
+            width: 100%;
+            padding: 15px 25px;
+            border: 1px solid #d1d5db;
+            border-radius: 50px;
+            background: #fff;
+            font-size: 14px;
+            font-family: inherit;
+            outline: none;
+            box-sizing: border-box;
+            appearance: none;
+        }
+
+        .select-wrapper { position: relative; }
+        .select-wrapper::after {
+            content: "\f107";
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+            position: absolute;
+            right: 25px; top: 15px;
+            pointer-events: none;
+            color: #999;
+        }
+
+        /* --- UPLOAD CV SECTION --- */
+        .file-upload-wrapper {
+            width: 100%;
+            padding: 6px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 50px;
+            background-color: #fff;
+            display: flex;
+            align-items: center;
+            box-sizing: border-box;
+        }
+
+        input[type="file"]::file-selector-button {
+            background-color: #efefef;
+            color: #444;
+            padding: 8px 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 13px;
+            margin-right: 15px;
+            font-weight: 500;
+        }
+
+        input[type="file"]::file-selector-button:hover {
+            background-color: #e2e2e2;
+        }
+
+        input[type="file"] {
+            font-size: 13px;
+            color: #777;
+            cursor: pointer;
+            width: 100%;
+            outline: none;
+        }
+
+        .checkbox-area { display: flex; gap: 10px; font-size: 12px; color: #666; margin: 30px 0; align-items: center; }
+
+        button.submit-btn {
+            width: 100%;
+            padding: 18px;
+            background-color: var(--primary-blue);
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background-color: #fff;
+            padding: 100px 5% 40px;
+            border-top: 1px solid #eee;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr;
+            gap: 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-col h3 { color: var(--primary-blue); margin-bottom: 20px; font-size: 20px; }
+        .footer-col p { font-size: 14px; line-height: 1.7; color: #555; }
+
+        .contact-item { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; font-size: 14px; }
+        .contact-item i { color: var(--primary-blue); width: 20px; }
+
+        .social-links { display: flex; gap: 15px; margin-top: 20px; }
+        .social-icon {
+            width: 45px; height: 45px;
+            background: var(--primary-blue);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        .footer-bottom {
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: #999;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-nav a { text-decoration: none; color: #666; margin-left: 15px; font-weight: 600; }
+        .back-top { color: var(--primary-blue); font-weight: 700; text-decoration: none; }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">RS TALENT HUB</div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="#">About us</a>
+            <a href="#">Services</a>
+            <a href="#" class="active-link">Drop Your CV</a>
+            <a href="#">Contact</a>
+        </nav>
+    </header>
+
+    <div class="banner">
+        <h1>Drop Your CV</h1>
+        <p>"Where Recruitment & Selection Meet"</p>
+    </div>
+
+    <div class="container">
+        <h2>Drop Your CV Here</h2>
+        <form>
+            <div class="form-group">
+                <label>Full Name <span>*</span></label>
+                <input type="text" placeholder="">
+            </div>
+
+            <div class="form-group">
+                <label>Phone Number <span>*</span></label>
+                <input type="text" placeholder="">
+            </div>
+
+            <div class="form-group">
+                <label>Email <span>*</span></label>
+                <input type="email" placeholder="">
+            </div>
+
+            <div class="form-group">
+                <label>Experience Level</label>
+                <div class="select-wrapper">
+                    <select>
+                        <option>—Please Choose an Option—</option>
+                        <option>Fresh Graduate</option>
+                        <option>1-3 Years</option>
+                        <option>3-5 Years</option>
+                        <option>5+ Years</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Apply For <span>*</span></label>
+                <div class="select-wrapper">
+                    <select>
+                        <option>Administration & Office Support</option>
+                        <option>Management</option>
+                        <option>Technical</option>
+                        <option>Sales & Marketing</option>
+                        <option>Human Resources</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Other: Apply For</label>
+                <input type="text" placeholder="">
+            </div>
+
+            <div class="form-group">
+                <label>Upload CV/Resume <span>*</span></label>
+                <div class="file-upload-wrapper">
+                    <input type="file" id="cv-upload">
+                </div>
+                <p style="font-size: 11px; color: #9ca3af; margin-top: 8px;">Allowed Type(s): .pdf, .doc, .docx</p>
+            </div>
+
+            <div class="checkbox-area">
+                <input type="checkbox" required>
+                <span>By using this form you agree with the storage and handling of your data by this website. *</span>
+            </div>
+
+            <button type="submit" class="submit-btn">Submit</button>
+        </form>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-col">
+                <h3>About Us</h3>
+                <p><b>RS Talent Hub</b> is your partner in excellence. We specialize in identifying and placing the right talent where recruitment and selection meet perfectly.</p>
+            </div>
+            <div class="footer-col">
+                <h3>Contact us</h3>
+                <div class="contact-item"><i class="fas fa-phone-alt"></i> +92 333 1950795</div>
+                <div class="contact-item"><i class="fas fa-envelope"></i> info@rstalenthub.com</div>
+                <div class="contact-item"><i class="fas fa-globe"></i> rstalenthub@gmail.com</div>
+            </div>
+            <div class="footer-col">
+                <p style="font-size: 11px; color: #999; letter-spacing: 1px;">GET IN TOUCH</p>
+                <h3>Social links</h3>
+                <div class="social-links">
+                    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div>Copyright by <b>RS Talent Hub</b>. All rights reserved.</div>
+            <div class="footer-nav">
+                <a href="index.html">HOME</a>
+                <a href="#">ABOUT US</a>
+                <a href="#">SERVICES</a>
+                <a href="#" class="back-top"><i class="fas fa-chevron-up"></i> BACK TO TOP</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

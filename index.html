@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RS Talent Hub | Premium HR Solutions</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    
+    <style>
+        :root {
+            --rs-blue: #1e4d92; /* Royal Blue from logo */
+            --rs-silver: #d1d5db; /* Silver from logo */
+            --rs-dark: #111827;
+            --rs-text: #374151;
+            --white: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; scroll-behavior: smooth; }
+        body { background: #f9fafb; color: var(--rs-text); overflow-x: hidden; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-thumb { background: var(--rs-blue); border-radius: 10px; }
+
+        /* Glassmorphism Header */
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 8%; background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px); position: fixed; width: 100%; top: 0; z-index: 1000;
+            border-bottom: 1px solid rgba(255,255,255,0.3);
+        }
+        /* Logo Link Added */
+        .logo-area { display: flex; align-items: center; gap: 10px; text-decoration: none; cursor: pointer; }
+        .logo-img { height: 50px; width: auto; border-radius: 5px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .logo-text { font-weight: 800; font-size: 20px; color: var(--rs-dark); letter-spacing: -1px; }
+        .logo-text span { color: var(--rs-blue); }
+
+        nav ul { display: flex; list-style: none; gap: 30px; }
+        nav ul li a { color: var(--rs-dark); font-weight: 600; font-size: 14px; text-decoration: none; transition: 0.3s; position: relative; }
+        nav ul li a::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px; background: var(--rs-blue); transition: 0.3s; }
+        nav ul li a:hover::after { width: 100%; }
+
+        .header-contact { background: var(--rs-blue); color: white !important; padding: 10px 22px; border-radius: 5px; font-size: 13px; text-decoration: none; box-shadow: 0 4px 15px rgba(30, 77, 146, 0.3); }
+
+        /* Premium Hero Slider */
+        .hero-slider { position: relative; width: 100%; height: 100vh; background: #000; }
+        .slide {
+            position: absolute; inset: 0; opacity: 0; transition: 1.2s ease-in-out;
+            display: flex; align-items: center; padding: 0 10%;
+            background-size: cover; background-position: center;
+        }
+        .slide.active { opacity: 1; z-index: 5; }
+        .slide::before { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 100%); }
+
+        .slide-content { position: relative; z-index: 10; color: white; max-width: 700px; }
+        .slide-content h4 { color: var(--rs-silver); font-weight: 600; letter-spacing: 3px; margin-bottom: 20px; text-transform: uppercase; }
+        .slide-content h1 { font-size: 65px; font-weight: 800; line-height: 1.1; margin-bottom: 25px; }
+        .slide-content h1 span { color: var(--rs-blue); text-shadow: 0 0 20px rgba(30, 77, 146, 0.5); }
+        .slide-content p { font-size: 18px; opacity: 0.9; margin-bottom: 35px; border-left: 4px solid var(--rs-blue); padding-left: 20px; }
+
+        /* Animated Buttons */
+        .btn-group { display: flex; gap: 15px; }
+        .btn-p { padding: 15px 35px; border-radius: 4px; font-weight: 700; text-transform: uppercase; font-size: 13px; cursor: pointer; transition: 0.3s; border: none; }
+        .btn-blue { background: var(--rs-blue); color: white; text-decoration: none; display: flex; align-items: center; }
+        .btn-blue:hover { background: #153a6f; transform: translateY(-3px); }
+        .btn-outline { background: transparent; border: 2px solid white; color: white; text-decoration: none; display: flex; align-items: center; }
+        .btn-outline:hover { background: white; color: var(--rs-dark); }
+
+        /* Slider Controls */
+        .controls { position: absolute; bottom: 50px; right: 8%; z-index: 20; display: flex; gap: 15px; }
+        .ctrl-btn { width: 50px; height: 50px; border: 1px solid rgba(255,255,255,0.3); border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; }
+        .ctrl-btn:hover { background: var(--rs-blue); border-color: var(--rs-blue); }
+
+        /* Floating Badge */
+        .floating-badge {
+            position: absolute; top: 150px; right: 10%; z-index: 5;
+            background: rgba(255,255,255,0.1); backdrop-filter: blur(5px);
+            padding: 20px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.2);
+            animation: float 4s infinite ease-in-out;
+        }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+
+        /* Section Styling */
+        section { padding: 100px 8%; }
+        .title-area { text-align: center; margin-bottom: 60px; }
+        .title-area h2 { font-size: 40px; color: var(--rs-dark); margin-bottom: 15px; position: relative; display: inline-block; }
+        .title-area h2::after { content: ''; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 60px; height: 4px; background: var(--rs-blue); }
+        .title-area p { font-weight: 600; color: var(--rs-blue); text-transform: uppercase; font-size: 14px; }
+
+        /* Service Cards */
+        .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+        .card { background: white; padding: 45px; border-radius: 12px; transition: 0.4s; border: 1px solid #f0f0f0; }
+        .card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.08); border-color: var(--rs-blue); }
+        .card-icon { width: 70px; height: 70px; background: var(--rs-dark); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 28px; margin-bottom: 25px; transition: 0.4s; }
+        .card:hover .card-icon { background: var(--rs-blue); transform: rotateY(360deg); }
+        .card h3 { font-size: 20px; margin-bottom: 15px; color: var(--rs-dark); }
+        .card p { font-size: 14px; line-height: 1.6; color: #666; }
+
+        /* Slogan Bar */
+        .slogan-bar { background: var(--rs-dark); color: white; text-align: center; padding: 30px; }
+        .slogan-bar h3 { font-weight: 400; letter-spacing: 2px; }
+        .slogan-bar span { color: var(--rs-blue); font-weight: 700; }
+
+        /* Footer Modern */
+        footer { background: #0b0f19; color: white; padding: 80px 8% 30px; }
+        .footer-main { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 50px; margin-bottom: 50px; }
+        .footer-logo h2 { margin-bottom: 20px; font-size: 28px; }
+        .socials { display: flex; gap: 15px; margin-top: 20px; }
+        .socials a { width: 40px; height: 40px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; transition: 0.3s; }
+        .socials a:hover { background: var(--rs-blue); transform: scale(1.1); }
+        
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px; text-align: center; font-size: 14px; opacity: 0.7; }
+
+        @media (max-width: 992px) {
+            .services-grid, .footer-main { grid-template-columns: 1fr; }
+            .slide-content h1 { font-size: 40px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html" class="logo-area">
+            <div class="logo-text">RS <span>TALENT HUB</span></div>
+        </a>
+        <ul>
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="#about">ABOUT US</a></li>
+            <li><a href="#services">SERVICES</a></li>
+            <li><a href="recruit.html">HOW WE RECRUIT</a></li>
+            <li><a href="cv.html">DROP YOUR CV</a></li>
+        </ul>
+        <a href="tel:+923331950795" class="header-contact"><i class="fas fa-phone-alt"></i> &nbsp;+92 333 1950795</a>
+    </nav>
+
+    <div class="hero-slider">
+        <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=1920&q=80');">
+            <div class="slide-content animate__animated animate__fadeInUp">
+                <h4>HR is all about people</h4>
+                <h1>We Recruit For You <span>Hire The Experts</span></h1>
+                <p>RS Talent Hub bridges the gap between premium talent and world-class organizations with a focus on excellence.</p>
+                <div class="btn-group">
+                    <a href="cv.html" class="btn-p btn-blue">Contact Us</a>
+                    <a href="#" class="btn-p btn-outline">Join Us on LinkedIn</a>
+                </div>
+            </div>
+            <div class="floating-badge">
+                <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" width="80" style="filter: invert(1);">
+            </div>
+        </div>
+
+        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1920&q=80');">
+            <div class="slide-content">
+                <h4>Today's Talent, Tomorrow's Success</h4>
+                <h1>Work Together <span>The HR Professionals</span></h1>
+                <p>We provide end-to-end recruitment solutions designed to scale your business with the right people.</p>
+                <div class="btn-group">
+                    <a href="#services" class="btn-p btn-blue">Explore Services</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1920&q=80');">
+            <div class="slide-content">
+                <h4>GLOBAL RECRUITMENT PARTNER</h4>
+                <h1>Selecting <span>Excellence</span></h1>
+                <p>We help international companies find top-tier professionals quickly and securely.</p>
+                <div class="btn-group">
+                    <a href="recruit.html" class="btn-p btn-blue">Our Process</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1920&q=80');">
+            <div class="slide-content">
+                <h4>STRATEGIC HR SOLUTIONS</h4>
+                <h1>Building <span>Great Teams</span></h1>
+                <p>From startups to established firms, we define roles and hire talent that fits your culture.</p>
+                <div class="btn-group">
+                    <a href="cv.html" class="btn-p btn-blue">Get Started</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <div class="ctrl-btn" onclick="prevSlide()"><i class="fas fa-arrow-left"></i></div>
+            <div class="ctrl-btn" onclick="nextSlide()"><i class="fas fa-arrow-right"></i></div>
+        </div>
+    </div>
+
+    <div class="slogan-bar">
+        <h3>WE <span>RECRUIT</span> TALENT. WE <span>SELECT</span> EXCELLENCE.</h3>
+    </div>
+
+    <section id="services">
+        <div class="title-area">
+            <p>Our core expertise</p>
+            <h2>Services We Provide?</h2>
+        </div>
+        
+        <div class="services-grid">
+            <div class="card">
+                <div class="card-icon"><i class="fas fa-globe"></i></div>
+                <h3>Remote Team Hiring</h3>
+                <p>Build cost-effective remote teams by sourcing top-tier talent from Pakistan for your global operations.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon"><i class="fas fa-user-tie"></i></div>
+                <h3>In-House Recruitment</h3>
+                <p>Strategic local and international hiring models tailored specifically for your company's workforce needs.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon"><i class="fas fa-rocket"></i></div>
+                <h3>Workforce for Startups</h3>
+                <p>Setting up HR foundations from day one, including role definitions and efficient hiring structures.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-main">
+            <div class="footer-logo">
+                <h2 style="color:white">RS <span style="color:var(--rs-blue)">TALENT HUB</span></h2>
+                <p style="opacity:0.6; font-size:14px; line-height:1.8">We are a group of professionals providing external HR services, specializing in recruitment and excellence.</p>
+                <div class="socials">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div>
+                <h4 style="margin-bottom:25px">Quick Links</h4>
+                <ul style="list-style:none; opacity:0.7; font-size:14px; line-height:2.5">
+                    <li><a href="index.html" style="color:white; text-decoration:none">Home</a></li>
+                    <li>About Us</li>
+                    <li><a href="#services" style="color:white; text-decoration:none">Services</a></li>
+                    <li>Contact</li>
+                </ul>
+            </div>
+            <div>
+                <h4 style="margin-bottom:25px">Contact Us</h4>
+                <p style="opacity:0.7; font-size:14px;"><i class="fas fa-phone-alt"></i> +92 333 1950795</p>
+                <p style="opacity:0.7; font-size:14px; margin-top:10px;"><i class="fas fa-envelope"></i> info@rstalenthub.com</p>
+            </div>
+            <div>
+                <h4 style="margin-bottom:25px">Location</h4>
+                <p style="opacity:0.7; font-size:14px;">Lahore, Punjab, Pakistan</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 RS Talent Hub. We Recruit Talent. We Select Excellence.
+        </div>
+    </footer>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        let current = 0;
+
+        function showSlide(index) {
+            slides.forEach(s => s.classList.remove('active'));
+            slides[index].classList.add('active');
+            
+            const content = slides[index].querySelector('.slide-content');
+            content.classList.remove('animate__fadeInUp');
+            void content.offsetWidth; 
+            content.classList.add('animate__fadeInUp');
+        }
+
+        function nextSlide() {
+            current = (current + 1) % slides.length;
+            showSlide(current);
+        }
+
+        function prevSlide() {
+            current = (current - 1 + slides.length) % slides.length;
+            showSlide(current);
+        }
+
+        setInterval(nextSlide, 6000);
+    </script>
+</body>
+</html>
