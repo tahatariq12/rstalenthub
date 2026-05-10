@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RS Talent Hub | Premium HR Solutions</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+        :root {
+            --rs-blue: #1e4d92; 
+            --rs-silver: #d1d5db; 
+            --rs-dark: #111827;
+            --rs-text: #374151;
+            --white: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; scroll-behavior: smooth; }
+        body { background: #f9fafb; color: var(--rs-text); overflow-x: hidden; }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-thumb { background: var(--rs-blue); border-radius: 10px; }
+
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 8%; background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px); position: fixed; width: 100%; top: 0; z-index: 1000;
+            border-bottom: 1px solid rgba(255,255,255,0.3);
+        }
+
+        /* Scroll hone par sirf shadow aur halki transition */
+        nav.scrolled {
+            background: #ffffff !important;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 12px 8%; /* Halka sa shrink effect */
+            transition: all 0.3s ease;
+        }
+
+        /* Base nav mein transition add karein taake jhatka na lage */
+        nav {
+            transition: all 0.3s ease;
+        }
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px; /* Logo aur text ke darmiyan fasla */
+            text-decoration: none;
+        }
+
+        .main-logo {
+            height: 50px !important; /* Isse image ko height milegi */
+            width: auto;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        /* Mobile ke liye logo thora chota */
+        @media (max-width: 992px) {
+            .main-logo {
+                height: 35px;
+            }
+        }
+        
+        .logo-area { display: flex; align-items: center; gap: 10px; text-decoration: none; cursor: pointer; }
+        .logo-text { font-weight: 800; font-size: 20px; color: var(--rs-dark); letter-spacing: -1px; }
+        .logo-text span { color: var(--rs-blue); }
+
+        nav ul { display: flex; list-style: none; gap: 30px; }
+        nav ul li a { color: var(--rs-dark); font-weight: 600; font-size: 14px; text-decoration: none; transition: 0.3s; position: relative; }
+        nav ul li a::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px; background: var(--rs-blue); transition: 0.3s; }
+        nav ul li a:hover::after { width: 100%; }
+
+        .header-contact { background: var(--rs-blue); color: white !important; padding: 10px 22px; border-radius: 5px; font-size: 13px; text-decoration: none; box-shadow: 0 4px 15px rgba(30, 77, 146, 0.3); }
+
+        .menu-btn { display: none; font-size: 24px; color: var(--rs-dark); cursor: pointer; }
+
+        .sidebar {
+            position: fixed; top: 0; left: -300px; width: 280px; height: 100%;
+            background: var(--white); z-index: 2000; transition: 0.4s ease;
+            box-shadow: 10px 0 30px rgba(0,0,0,0.1); padding: 40px 25px;
+        }
+        .sidebar.active { left: 0; }
+        .sidebar-close { position: absolute; top: 20px; right: 20px; font-size: 26px; cursor: pointer; }
+        
+        .sidebar-links { list-style: none; margin-top: 50px; }
+        .sidebar-links li { margin-bottom: 20px; border-bottom: 1px solid #f0f0f0; padding-bottom: 12px; }
+        .sidebar-links li a { text-decoration: none; color: var(--rs-dark); font-weight: 700; font-size: 16px; display: block; }
+        .sidebar-links li a:hover { color: var(--rs-blue); }
+
+        .overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); z-index: 1500; display: none;
+            backdrop-filter: blur(2px);
+        }
+        .overlay.active { display: block; }
+
+        .hero-slider { position: relative; width: 100%; height: 100vh; background: #000; }
+        .slide {
+            position: absolute; inset: 0; opacity: 0; transition: 1.2s ease-in-out;
+            display: flex; align-items: center; padding: 0 10%;
+            background-size: cover; background-position: center;
+        }
+        .slide.active { opacity: 1; z-index: 5; }
+        .slide::before { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 100%); }
+
+        .slide-content { position: relative; z-index: 10; color: white; max-width: 700px; }
+        .slide-content h4 { color: var(--rs-silver); font-weight: 600; letter-spacing: 3px; margin-bottom: 20px; text-transform: uppercase; }
+        .slide-content h1 { font-size: 65px; font-weight: 800; line-height: 1.1; margin-bottom: 25px; }
+        .slide-content h1 span { color: var(--rs-blue); text-shadow: 0 0 20px rgba(30, 77, 146, 0.5); }
+        .slide-content p { font-size: 18px; opacity: 0.9; margin-bottom: 35px; border-left: 4px solid var(--rs-blue); padding-left: 20px; }
+
+        .btn-group { display: flex; gap: 15px; }
+        .btn-p { padding: 15px 35px; border-radius: 4px; font-weight: 700; text-transform: uppercase; font-size: 13px; cursor: pointer; transition: 0.3s; border: none; }
+        .btn-blue { background: var(--rs-blue); color: white; text-decoration: none; display: flex; align-items: center; }
+        .btn-outline { background: transparent; border: 2px solid white; color: white; text-decoration: none; display: flex; align-items: center; }
+
+        .controls { position: absolute; bottom: 50px; right: 8%; z-index: 20; display: flex; gap: 15px; }
+        .ctrl-btn { width: 50px; height: 50px; border: 1px solid rgba(255,255,255,0.3); border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; }
+
+        .floating-badge {
+            position: absolute; top: 150px; right: 10%; z-index: 5;
+            background: rgba(255,255,255,0.1); backdrop-filter: blur(5px);
+            padding: 20px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.2);
+            animation: float 4s infinite ease-in-out;
+        }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+
+        section { padding: 100px 8%; }
+        .title-area { text-align: center; margin-bottom: 60px; }
+        .title-area h2 { font-size: 40px; color: var(--rs-dark); position: relative; display: inline-block; }
+        .title-area h2::after { content: ''; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 60px; height: 4px; background: var(--rs-blue); }
+
+        .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+        .card { background: white; padding: 45px; border-radius: 12px; transition: 0.4s; border: 1px solid #f0f0f0; }
+        .card:hover { transform: translateY(-10px); border-color: var(--rs-blue); }
+        .card-icon { width: 70px; height: 70px; background: var(--rs-dark); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 28px; margin-bottom: 25px; transition: 0.4s; }
+
+        .slogan-bar { background: var(--rs-dark); color: white; text-align: center; padding: 30px; }
+        .slogan-bar span { color: var(--rs-blue); font-weight: 700; }
+
+        /* Why Choose Us Modern Styling */
+.why-choose-us {
+    background-color: #ffffff;
+    /* Background shape like the image */
+    background-image: radial-gradient(circle at 80% 50%, #e0f2fe 0%, transparent 50%),
+                      radial-gradient(circle at 20% 80%, #f0f9ff 0%, transparent 40%);
+    padding: 100px 8%;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.why-header p { color: #64748b; font-weight: 600; font-size: 14px; margin-bottom: 5px; }
+.why-header h2 { 
+    font-size: 48px; 
+    color: var(--rs-dark); 
+    margin-bottom: 60px; 
+    font-weight: 800; 
+}
+.why-header h2 span { color: var(--rs-blue); }
+
+.why-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px 80px;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+.why-item { 
+    display: flex; 
+    gap: 25px; 
+    align-items: center; 
+    transition: 0.3s;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+/* Stylish Skewed Icon Box */
+.why-icon-box {
+    min-width: 70px; 
+    height: 70px;
+    border: 1.5px solid #333;
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    font-size: 26px; 
+    color: #333;
+    background: transparent;
+    transform: perspective(500px) rotateY(-15deg);
+    transition: all 0.4s ease;
+    cursor: pointer;
+}
+
+/* Hover Effect: Black background, white icon, and straight rotation */
+.why-item:hover .why-icon-box {
+    background: #111827;
+    color: #ffffff;
+    border-color: #111827;
+    transform: perspective(500px) rotateY(0deg) scale(1.1);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.why-text h3 { 
+    font-size: 19px; 
+    font-weight: 700; 
+    margin-bottom: 5px; 
+    color: var(--rs-dark); 
+}
+
+.why-text p { 
+    font-size: 14px; 
+    line-height: 1.5; 
+    color: #4b5563; 
+    max-width: 400px;
+}
+
+/* Responsive for Mobile */
+@media (max-width: 992px) {
+    .why-grid { grid-template-columns: 1fr; gap: 20px; }
+    .why-header h2 { font-size: 35px; }
+    .why-item { padding: 10px 0; }
+}
+
+        /* Footer Modern */
+        footer { background: #0b0f19; color: white; padding: 80px 8% 30px; transition: 0.3s; }
+        .footer-main { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 50px; margin-bottom: 50px; }
+        .footer-logo h2 { margin-bottom: 20px; font-size: 28px; }
+        .socials { display: flex; gap: 15px; margin-top: 20px; }
+        .socials a { width: 40px; height: 40px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; transition: 0.3s; }
+        
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px; text-align: center; font-size: 14px; opacity: 0.7; }
+
+        /* Media Queries - Updated for smaller footer in mobile */
+        @media (max-width: 992px) {
+            nav ul, .header-contact { display: none; }
+            .menu-btn { display: block; }
+            .services-grid, .footer-main { grid-template-columns: 1fr; }
+            .slide-content h1 { font-size: 40px; }
+            
+            /* Footer Mobile Adjustments */
+            footer { padding: 40px 5% 20px; } /* Footer padding kam kar di */
+            .footer-main { gap: 25px; margin-bottom: 30px; text-align: center; } /* Gap kam aur text center */
+            .footer-logo h2 { font-size: 22px; margin-bottom: 10px; }
+            .footer-logo p { font-size: 13px !important; }
+            .socials { justify-content: center; margin-top: 15px; }
+            .footer-main h4 { margin-bottom: 15px !important; font-size: 16px; margin-top: 10px; }
+            .footer-main ul li, .footer-main p { font-size: 13px !important; line-height: 2 !important; }
+            .footer-bottom { padding-top: 20px; font-size: 12px; margin-top: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="overlay" id="overlay" onclick="closeMenu()"></div>
+
+    <div class="sidebar" id="sidebar">
+        <i class="fas fa-times sidebar-close" onclick="closeMenu()"></i>
+        
+        <a href="index.html" class="logo-area">
+            <!-- Logo Image -->
+            <img src="Logo.png" alt="RS Talent Hub Logo" class="main-logo">
+            <!-- Logo Text -->
+            <div class="logo-text">RS <span>TALENT HUB</span></div>
+        </a>
+        <ul class="sidebar-links">
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="about.html">ABOUT US</a></li>
+            <li><a href="#services">SERVICES</a></li>
+            <li><a href="recruit.html">HOW WE RECRUIT</a></li>
+            <li><a href="cv.html">DROP YOUR CV</a></li>
+            <li><a href="tel:+923331950795" style="color: var(--rs-blue); font-size: 14px; border: none; margin-top: 20px;"><i class="fas fa-phone-alt"></i> +92 303 2054717</a></li>
+        </ul>
+    </div>
+
+    <nav>
+        <div class="menu-btn" onclick="openMenu()">
+            <i class="fas fa-bars"></i>
+        </div>
+        <a href="index.html" class="logo-area">
+            <img src="Logo.png" alt="RS Talent Hub Logo" class="main-logo">
+            <div class="logo-text">RS <span>TALENT HUB</span></div>
+        </a>
+        <ul>
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="about.html">ABOUT US</a></li>
+            <li><a href="#services">SERVICES</a></li>
+            <li><a href="recruit.html">HOW WE RECRUIT</a></li>
+            <li><a href="cv.html">DROP YOUR CV</a></li>
+        </ul>
+        <a href="tel:+923331950795" class="header-contact"><i class="fas fa-phone-alt"></i> &nbsp;+92 303 2054717</a>
+    </nav>
+
+    <div class="hero-slider">
+        <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=1920&q=80');">
+            <div class="slide-content animate__animated animate__fadeInUp">
+                <h4>HR is all about people</h4>
+                <h1>We Recruit For You <span>Hire The Experts</span></h1>
+                <p>RS Talent Hub bridges the gap between premium talent and world-class organizations with a focus on excellence.</p>
+                <div class="btn-group">
+                    <a href="cv.html" class="btn-p btn-blue">Contact Us</a>
+                    <a href="#" class="btn-p btn-outline">LinkedIn</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1920&q=80');">
+            <div class="slide-content">
+                <h4>STRATEGIC HR SOLUTIONS</h4>
+                <h1>Building <span>Great Teams</span></h1>
+                <p>From startups to established firms, we define roles and hire talent that fits your culture.</p>
+                <div class="btn-group">
+                    <a href="cv.html" class="btn-p btn-blue">Get Started</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <div class="ctrl-btn" onclick="prevSlide()"><i class="fas fa-arrow-left"></i></div>
+            <div class="ctrl-btn" onclick="nextSlide()"><i class="fas fa-arrow-right"></i></div>
+        </div>
+    </div>
+
+    <div class="slogan-bar">
+        <h3>WE <span>RECRUIT</span> TALENT. WE <span>SELECT</span> EXCELLENCE.</h3>
+    </div>
+
+    <section id="services">
+        <div class="title-area">
+            <p>Our core expertise</p>
+            <h2>Services We Provide?</h2>
+        </div>
+        <div class="services-grid">
+            <div class="card">
+                <div class="card-icon"><i class="fas fa-globe"></i></div>
+                <h3>Remote Team Hiring</h3>
+                <p>Build cost-effective remote teams by sourcing top-tier talent from Pakistan for your global operations.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon"><i class="fas fa-user-tie"></i></div>
+                <h3>In-House Recruitment</h3>
+                <p>Strategic local and international hiring models tailored specifically for your company's workforce needs.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon"><i class="fas fa-rocket"></i></div>
+                <h3>Workforce for Startups</h3>
+                <p>Setting up HR foundations from day one, including role definitions and efficient hiring structures.</p>
+            </div>
+        </div>
+    </section>
+    
+    <section class="why-choose-us">
+    <div class="why-header">
+        <p>We've placed 500+ amazing people</p>
+        <h2>Why <span>Choose Us?</span></h2>
+    </div>
+
+    <div class="why-grid">
+        <!-- Item 1 -->
+        <div class="why-item">
+            <div class="why-icon-box"><i class="fas fa-file-invoice-dollar"></i></div>
+            <div class="why-text">
+                <h3>Registered Tax Payers</h3>
+                <p>We are legally registered and pay all required business and employment taxes.</p>
+            </div>
+        </div>
+        <!-- Item 2 -->
+        <div class="why-item">
+            <div class="why-icon-box"><i class="fas fa-female"></i></div>
+            <div class="why-text">
+                <h3>Women Owned</h3>
+                <p>Proudly led by women with a strong and diverse leadership team.</p>
+            </div>
+        </div>
+        <!-- Item 3 -->
+        <div class="why-item">
+            <div class="why-icon-box"><i class="fas fa-bolt"></i></div>
+            <div class="why-text">
+                <h3>Speed, Hire Fast</h3>
+                <p>Hire top candidates quickly within just 5 to 7 working days.</p>
+            </div>
+        </div>
+        <!-- Item 4 -->
+        <div class="why-item">
+            <div class="why-icon-box"><i class="fas fa-handshake"></i></div>
+            <div class="why-text">
+                <h3>Global Partners</h3>
+                <p>We provide recruitment support across regions with global hiring expertise.</p>
+            </div>
+        </div>
+        <!-- Item 5 -->
+        <div class="why-item">
+            <div class="why-icon-box"><i class="fas fa-coins"></i></div>
+            <div class="why-text">
+                <h3>One Time Payment</h3>
+                <p>No ongoing fee. Pay once for the service—no recurring or hidden charges.</p>
+            </div>
+        </div>
+        <!-- Item 6 -->
+        <div class="why-item">
+            <div class="why-icon-box"><i class="fas fa-shield-alt"></i></div>
+            <div class="why-text">
+                <h3>Payment Security</h3>
+                <p>Pay after the service is availed. Enjoy complete payment security.</p>
+            </div>
+        </div>
+        <!-- Item 7 -->
+        <div class="why-item">
+            <div class="why-icon-box"><i class="fas fa-award"></i></div>
+            <div class="why-text">
+                <h3>Trusted by Employers</h3>
+                <p>Trusted by leading US companies for reliable and timely hiring needs.</p>
+            </div>
+        </div>
+        <!-- Item 8 -->
+        <div class="why-item">
+            <div class="why-icon-box"><i class="fas fa-chart-line"></i></div>
+            <div class="why-text">
+                <h3>Cost Effective</h3>
+                <p>Our pricing ensures quality recruitment solutions at affordable rates.</p>
+            </div>
+        </div>
+        <!-- Item 9 -->
+        <div class="why-item">
+            <div class="why-icon-box"><i class="fas fa-hourglass-half"></i></div>
+            <div class="why-text">
+                <h3>Facilitate Urgencies</h3>
+                <p>We respond quickly to urgent hiring or HR needs—no delays, just action.</p>
+            </div>
+        </div>
+        <!-- Item 10 -->
+        <div class="why-item">
+            <div class="why-icon-box"><i class="fas fa-users-cog"></i></div>
+            <div class="why-text">
+                <h3>Team of Experts</h3>
+                <p>Access our experienced HR professionals anytime with just a single call.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <footer>
+        <div class="footer-main">
+            <div class="footer-logo">
+                <h2 style="color:white">RS <span style="color:var(--rs-blue)">TALENT HUB</span></h2>
+                <p style="opacity:0.6; font-size:14px; line-height:1.8">We are a group of professionals providing external HR services, specializing in recruitment and excellence.</p>
+                <div class="socials">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div>
+                <h4 style="margin-bottom:25px">Quick Links</h4>
+                <ul style="list-style:none; opacity:0.7; font-size:14px; line-height:2.5">
+                    <li><a href="index.html" style="color:white; text-decoration:none">Home</a></li>
+                    <li><a href="about.html" style="color:white; text-decoration:none">About Us</a></li>
+                    <li><a href="#services" style="color:white; text-decoration:none">Services</a></li>
+                    <li>Contact</li>
+                </ul>
+            </div>
+            <div>
+                <h4 style="margin-bottom:25px">Contact Us</h4>
+                <p style="opacity:0.7; font-size:14px;"><i class="fas fa-phone-alt"></i> +92 303 2054717</p>
+                <p style="opacity:0.7; font-size:14px; margin-top:10px;"><i class="fas fa-envelope"></i> info@rstalenthub.com</p>
+            </div>
+            <div>
+                <h4 style="margin-bottom:25px">Location</h4>
+                <p style="opacity:0.7; font-size:14px;">Lahore, Punjab, Pakistan</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 RS Talent Hub. All Rights Reserved.
+        </div>
+    </footer>
+
+    <script>
+        function openMenu() {
+            document.getElementById('sidebar').classList.add('active');
+            document.getElementById('overlay').classList.add('active');
+        }
+        function closeMenu() {
+            document.getElementById('sidebar').classList.remove('active');
+            document.getElementById('overlay').classList.remove('active');
+        }
+
+        const slides = document.querySelectorAll('.slide');
+        let current = 0;
+        function showSlide(index) {
+            slides.forEach(s => s.classList.remove('active'));
+            slides[index].classList.add('active');
+            const content = slides[index].querySelector('.slide-content');
+            content.classList.remove('animate__fadeInUp');
+            void content.offsetWidth; 
+            content.classList.add('animate__fadeInUp');
+        }
+        function nextSlide() { current = (current + 1) % slides.length; showSlide(current); }
+        function prevSlide() { current = (current - 1 + slides.length) % slides.length; showSlide(current); }
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        setInterval(nextSlide, 6000);
+    </script>
+</body>
+</html>

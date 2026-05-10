@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - RS Talent Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+        :root {
+            --rs-blue: #1e4d92; 
+            --rs-silver: #d1d5db; 
+            --rs-dark: #111827;
+            --rs-text: #374151;
+            --white: #ffffff;
+            --rs-light-blue: #eef4fb;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; scroll-behavior: smooth; }
+        body { background: #f9fafb; color: var(--rs-text); overflow-x: hidden; padding-top: 80px; }
+
+        /* --- NAVBAR STYLES FROM MAIN PAGE --- */
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 8%; background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px); position: fixed; width: 100%; top: 0; z-index: 1000;
+            border-bottom: 1px solid rgba(255,255,255,0.3);
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            background: #ffffff !important;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 12px 8%;
+        }
+
+        .logo-area { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .main-logo { height: 50px !important; width: auto; }
+        .logo-text { font-weight: 800; font-size: 20px; color: var(--rs-dark); letter-spacing: -1px; }
+        .logo-text span { color: var(--rs-blue); }
+
+        nav ul { display: flex; list-style: none; gap: 30px; }
+        nav ul li a { color: var(--rs-dark); font-weight: 600; font-size: 14px; text-decoration: none; transition: 0.3s; position: relative; }
+        nav ul li a::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px; background: var(--rs-blue); transition: 0.3s; }
+        nav ul li a:hover::after { width: 100%; }
+        nav ul li a.active { color: var(--rs-blue); }
+
+        .header-contact { background: var(--rs-blue); color: white !important; padding: 10px 22px; border-radius: 5px; font-size: 13px; text-decoration: none; box-shadow: 0 4px 15px rgba(30, 77, 146, 0.3); }
+
+        .menu-btn { display: none; font-size: 24px; color: var(--rs-dark); cursor: pointer; }
+
+        /* Sidebar & Overlay */
+        .sidebar {
+            position: fixed; top: 0; left: -300px; width: 280px; height: 100%;
+            background: var(--white); z-index: 2000; transition: 0.4s ease;
+            box-shadow: 10px 0 30px rgba(0,0,0,0.1); padding: 40px 25px;
+        }
+        .sidebar.active { left: 0; }
+        .sidebar-close { position: absolute; top: 20px; right: 20px; font-size: 26px; cursor: pointer; }
+        .sidebar-links { list-style: none; margin-top: 50px; }
+        .sidebar-links li { margin-bottom: 20px; border-bottom: 1px solid #f0f0f0; padding-bottom: 12px; }
+        .sidebar-links li a { text-decoration: none; color: var(--rs-dark); font-weight: 700; font-size: 16px; display: block; }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1500; display: none; backdrop-filter: blur(2px); }
+        .overlay.active { display: block; }
+
+        /* --- ABOUT CONTENT STYLES --- */
+        .about-section {
+            padding: 100px 8%;
+            display: flex;
+            align-items: center;
+            gap: 50px;
+            background: url('https://www.transparenttextures.com/patterns/cubes.png');
+        }
+
+        .about-content { flex: 1; }
+        .about-content h1 { font-size: 45px; color: var(--rs-blue); margin-bottom: 20px; font-weight: 800; }
+        .about-content p { font-size: 18px; text-align: justify; margin-bottom: 15px; }
+
+        .about-image { flex: 1; text-align: center; }
+        .about-image img { max-width: 100%; border-radius: 15px; box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+
+        .philosophy-section { background: var(--rs-light-blue); padding: 80px 8%; text-align: center; }
+        .philosophy-section h2 { font-size: 40px; margin-bottom: 10px; color: var(--rs-dark); font-weight: 800; }
+        .philosophy-container { display: flex; gap: 30px; margin-top: 40px; }
+
+        .phi-card { background: white; padding: 40px; border-radius: 15px; flex: 1; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: 0.3s; }
+        .phi-card:hover { transform: translateY(-10px); }
+        .phi-icon { font-size: 40px; color: #ff8c00; margin-bottom: 20px; }
+
+        .stats-section { padding: 60px 8%; display: flex; justify-content: space-around; text-align: center; background: white; }
+        .stat-item h2 { font-size: 45px; color: var(--rs-blue); margin: 0; font-weight: 800; }
+        .stat-item p { font-weight: 600; color: var(--rs-text); }
+
+        /* --- FOOTER FROM MAIN PAGE --- */
+        footer { background: #0b0f19; color: white; padding: 80px 8% 30px; transition: 0.3s; }
+        .footer-main { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 50px; margin-bottom: 50px; }
+        .footer-logo h2 { margin-bottom: 20px; font-size: 28px; }
+        .socials { display: flex; gap: 15px; margin-top: 20px; }
+        .socials a { width: 40px; height: 40px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; transition: 0.3s; }
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px; text-align: center; font-size: 14px; opacity: 0.7; }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            nav ul, .header-contact { display: none; }
+            .menu-btn { display: block; }
+            .about-section, .philosophy-container, .footer-main { flex-direction: column; grid-template-columns: 1fr; text-align: center; }
+            .about-content h1 { font-size: 35px; }
+            footer { padding: 40px 5% 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="overlay" id="overlay" onclick="closeMenu()"></div>
+
+    <div class="sidebar" id="sidebar">
+        <i class="fas fa-times sidebar-close" onclick="closeMenu()"></i>
+        <a href="index.html" class="logo-area">
+            <img src="Logo.png" alt="RS Talent Hub Logo" class="main-logo">
+            <div class="logo-text">RS <span>TALENT HUB</span></div>
+        </a>
+        <ul class="sidebar-links">
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="about.html" class="active">ABOUT US</a></li>
+            <li><a href="index.html#services">SERVICES</a></li>
+            <li><a href="recruit.html">HOW WE RECRUIT</a></li>
+            <li><a href="cv.html">DROP YOUR CV</a></li>
+        </ul>
+    </div>
+
+    <nav>
+        <div class="menu-btn" onclick="openMenu()">
+            <i class="fas fa-bars"></i>
+        </div>
+        <a href="index.html" class="logo-area">
+            <img src="Logo.png" alt="RS Talent Hub Logo" class="main-logo">
+            <div class="logo-text">RS <span>TALENT HUB</span></div>
+        </a>
+        <ul>
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="about.html" class="active">ABOUT US</a></li>
+            <li><a href="index.html#services">SERVICES</a></li>
+            <li><a href="recruit.html">HOW WE RECRUIT</a></li>
+            <li><a href="cv.html">DROP YOUR CV</a></li>
+        </ul>
+        <a href="tel:+923032054717" class="header-contact"><i class="fas fa-phone-alt"></i> &nbsp;+92 303 2054717</a>
+    </nav>
+
+    <section class="about-section">
+        <div class="about-content">
+            <h1>Who We are?</h1>
+            <p>
+                Have you ever wondered how effortless hiring and managing your people could be—with the right HR partner by your side? 
+                At <strong>RS Talent Hub</strong>, we don't just recruit—we become your long-term HR ally. 
+                We are proud to announce our operational base in <strong>Pakistan</strong>, where we’re active across <strong>13+ cities</strong>.
+            </p>
+            <p>
+                With <strong>550+ successful recruitments</strong> and <strong>100+ satisfied clients</strong>, we bring speed, structure, and strategy to every hire. 
+                When you partner with us, you're onboarded as a permanent member so we can manage your HR needs efficiently.
+            </p>
+        </div>
+        <div class="about-image">
+            <img src="https://img.freepik.com/free-vector/human-resources-concept-with-searching_23-2148030282.jpg" alt="Recruitment Illustration">
+        </div>
+    </section>
+
+    <section class="philosophy-section">
+        <h2>Our Philosophy</h2>
+        <p>At RS Talent Hub, we can surely find the right fit for you!</p>
+        <div class="philosophy-container">
+            <div class="phi-card">
+                <i class="fas fa-bullhorn phi-icon"></i>
+                <h3>Mission</h3>
+                <p>To transform recruitment in Pakistan by utilizing cutting-edge techniques to connect top talent with the right organizations.</p>
+            </div>
+            <div class="phi-card">
+                <i class="fas fa-lightbulb phi-icon"></i>
+                <h3>Vision</h3>
+                <p>To become Pakistan’s leading digital recruitment company, shaping the future of recruitment through innovation.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats-section">
+        <div class="stat-item">
+            <h2>2</h2>
+            <p>Countries</p>
+        </div>
+        <div class="stat-item">
+            <h2>500+</h2>
+            <p>Hiring</p>
+        </div>
+        <div class="stat-item">
+            <h2>100+</h2>
+            <p>Clients</p>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-main">
+            <div class="footer-logo">
+                <h2 style="color:white">RS <span style="color:var(--rs-blue)">TALENT HUB</span></h2>
+                <p style="opacity:0.6; font-size:14px; line-height:1.8">We are a group of professionals providing external HR services, specializing in recruitment and excellence.</p>
+                <div class="socials">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div>
+                <h4 style="margin-bottom:25px">Quick Links</h4>
+                <ul style="list-style:none; opacity:0.7; font-size:14px; line-height:2.5">
+                    <li><a href="index.html" style="color:white; text-decoration:none">Home</a></li>
+                    <li><a href="about.html" style="color:white; text-decoration:none">About Us</a></li>
+                    <li><a href="index.html#services" style="color:white; text-decoration:none">Services</a></li>
+                    <li>Contact</li>
+                </ul>
+            </div>
+            <div>
+                <h4 style="margin-bottom:25px">Contact Us</h4>
+                <p style="opacity:0.7; font-size:14px;"><i class="fas fa-phone-alt"></i> +92 303 2054717</p>
+                <p style="opacity:0.7; font-size:14px; margin-top:10px;"><i class="fas fa-envelope"></i> info@rstalenthub.com</p>
+            </div>
+            <div>
+                <h4 style="margin-bottom:25px">Location</h4>
+                <p style="opacity:0.7; font-size:14px;">Lahore, Punjab, Pakistan</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 RS Talent Hub. All Rights Reserved.
+        </div>
+    </footer>
+
+    <script>
+        function openMenu() {
+            document.getElementById('sidebar').classList.add('active');
+            document.getElementById('overlay').classList.add('active');
+        }
+        function closeMenu() {
+            document.getElementById('sidebar').classList.remove('active');
+            document.getElementById('overlay').classList.remove('active');
+        }
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>
